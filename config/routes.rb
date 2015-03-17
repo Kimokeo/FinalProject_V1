@@ -6,7 +6,11 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#index'
   get 'home/basic' => 'home#basic'
-
+  get 'home/demo' => 'home#demo'
+  resources :users do
+    get 'simple_interface' => 'users#simple_interface'
+    get 'dynamic_interface' => 'users#dynamic_interface'
+  end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

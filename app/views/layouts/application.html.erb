@@ -1,8 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>FinalPrototype</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+	<div id="custom-bootstrap-menu" class="navbar navbar-default " role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header"><a class="navbar-brand" href="#">Crescendo</a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse navbar-menubuilder">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/">Home</a>
+                </li>
+                <li><a href="/user">Discover</a>
+                </li>
+                <li><a href="/">Create</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <% if user_signed_in? %>
+                    <li><a href="../users">'user.email'</a>
+                <% else %>
+                    <li><a href="../users/sign_in">Sign In</a>
+                    <li><a href="../users/sign_up">Register</a>
+                <% end %>
+        </div>
+    </div>
+</div>
+  <title>Crescendo</title>
+  <%= stylesheet_link_tag    "application", :media => "all" , 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>

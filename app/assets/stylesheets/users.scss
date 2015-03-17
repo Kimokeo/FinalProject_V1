@@ -1,0 +1,42 @@
+// Place all the styles related to the users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+div.piano {
+ font-size: 1.2em;
+ overflow: hidden;
+ display: block;
+ width: 42em;
+ padding: 0px;
+ margin: 0px;
+ border: 0px;
+ margin-left: 0.5em;
+}
+.piano span {
+ color: #808080;
+ background-color: #f0f0f0;
+ padding: 0.4em;
+ margin: 0.1em;
+ border: 0.3em double;
+ display: inline-block;
+ width: 2em;
+ height: 2em;
+ vertical-align: top;
+}
+.piano span.blank {
+ color: #f0f0f0;
+ background-color: #fff;
+}
+.piano span.on {
+ background-color: #000;
+}
+object.hidden {
+ visibility: hidden;
+ width: 0px;
+ height: 0px;
+ margin: 0px;
+ padding: 0px;
+ border-style: none;
+ border-width: 0px;
+ max-width: 0px;
+ max-height: 0px;
+}

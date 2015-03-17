@@ -5,4 +5,7 @@ class HomeController < ApplicationController
 	def basic
 	end
 	
+	def demo
+	end
+	
 end
