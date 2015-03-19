@@ -28,12 +28,7 @@
 //= require inc/jasmid/stream
 //= require inc/jasmid/midifile
 //= require inc/jasmid/replayer
-//= require soundfont/acoustic_grand_piano-mp3
-//= require inc/SoundManager2/script/soundmanager2-jsmin
-//= require inc/SoundManager2/script/soundmanager2-nodebug-jsmin
-//= require inc/SoundManager2/script/soundmanager2-nodebug
-//= require inc/SoundManager2/script/soundmanager2
-//= require swfobject
+//= require soundfont/acoustic_grand_piano-mp3.js
 //= require inc/Base64
 //= require inc/base64binary
 //= require inc/WebMIDIAPI

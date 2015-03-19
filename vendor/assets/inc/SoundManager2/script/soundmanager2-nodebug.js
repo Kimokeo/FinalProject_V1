@@ -13,7 +13,6 @@
 
 /*global window, SM2_DEFER, sm2Debugger, console, document, navigator, setTimeout, setInterval, clearInterval, Audio */
 /* jslint regexp: true, sloppy: true, white: true, nomen: true, plusplus: true */
-
 (function(window) {
 var soundManager = null;
 function SoundManager(smURL, smID) {

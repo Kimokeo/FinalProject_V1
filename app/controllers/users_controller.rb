@@ -19,7 +19,12 @@ class UsersController < ApplicationController
 		User.create(user_params)
 	end
 
+	def show
+		@user = User.find params[:user_id]
+	end
+	
 	def user_params
-    params.require(:user).permit(:username, :email, :password, :password_confirmation)
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :miditrack)
   end
+
 end

@@ -4420,7 +4420,7 @@ function SoundManager(smURL, smID) {
 
     // safety check for legacy (change to Flash 9 URL)
     _setVersionInfo();
-    _s.url = _normalizeMovieURL("inc/SoundManager2/swf/");
+    _s.url = _normalizeMovieURL("/assets/inc/SoundManager2/swf/");
     smURL = _s.url;
 
     _s.wmode = (!_s.wmode && _s.useHighPerformance ? 'transparent' : _s.wmode);

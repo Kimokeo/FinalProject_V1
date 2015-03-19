@@ -17,7 +17,7 @@ if (typeof (MIDI.Soundfont) === "undefined") MIDI.Soundfont = {};
 
 (function() { "use strict";
 
-var USE_JAZZMIDI = false; // Turn on to support JazzMIDI Plugin
+var USE_JAZZMIDI = true; // Turn on to support JazzMIDI Plugin
 
 MIDI.loadPlugin = function(conf) {
 	if (typeof(conf) === "function") conf = {

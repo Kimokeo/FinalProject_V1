@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150316164234) do
+ActiveRecord::Schema.define(version: 20150318021319) do
 
   create_table "homes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -34,6 +34,10 @@ ActiveRecord::Schema.define(version: 20150316164234) do
     t.string   "username",               limit: 255
     t.text     "bio",                    limit: 65535
     t.integer  "user_id",                limit: 4
+    t.string   "miditrack_file_name",    limit: 255
+    t.string   "miditrack_content_type", limit: 255
+    t.integer  "miditrack_file_size",    limit: 4
+    t.datetime "miditrack_updated_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
