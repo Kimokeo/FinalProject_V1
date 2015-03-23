@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   get 'home/demo' => 'home#demo'
   resources :users do
     get 'simple_interface' => 'users#simple_interface'
-    get 'dynamic_interface' => 'users#dynamic_interface'
+    get 'console' => 'users#console'
+    get 'song_builder' => 'users#song_builder'
   end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

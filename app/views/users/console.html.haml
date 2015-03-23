@@ -1,2 +1,9 @@
-%h3 Select your Console
-	=link_to user_simple_interface_path
+= stylesheet_link_tag  "application", :media => "all" , 'data-turbolinks-track' => true
+%body
+	.col-md-3
+		%h2 Select your Console
+		=link_to "Simple console", user_simple_interface_path
+	.col-md-3
+		%h2 Build a song
+		%h3 Combine and listen to your tracks
+		=link_to "Combine tracks", user_song_builder_path

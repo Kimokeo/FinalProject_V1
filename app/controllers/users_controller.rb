@@ -1,10 +1,15 @@
 class UsersController < ApplicationController
-	before_filter :authenticate_user!, :except => [:show, :index]
+	# before_filter :set_user_id, :except => [:show, :index]
 	def index
-
+		@users = User.all
 	end
 
 	def console
+		@user = User.find params[:user_id]
+	end
+
+	def song_builder
+		@user = User.find params[:user_id]
 	end
 
 	def simple_interface
@@ -20,9 +25,14 @@ class UsersController < ApplicationController
 	end
 
 	def show
-		@user = User.find params[:user_id]
+		@user = User.find params[:id]
 	end
 	
+	# def set_user_id
+	# 	@user = User.find params[:id]
+	# end
+
+private
 	def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :miditrack)
   end

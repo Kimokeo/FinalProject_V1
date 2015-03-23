@@ -13,12 +13,12 @@
                 </li>
                 <li><a href="/users">Discover</a>
                 </li>
-                <li><a href="/users/:id">Create</a>
+                <li><a href="#">Create</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <% if user_signed_in? %>
-                    <li><a href="../users">'user.email'</a>
+                      <li><a href="/users"><%= "You are logged in as #{current_user.email}" %> </a></li>
                 <% else %>
                     <li><a href="../users/sign_in">Sign In</a>
                     <li><a href="../users/sign_up">Register</a>

@@ -15,20 +15,8 @@
 //= require twitter/bootstrap
 //= require turbolinks
 //= require_tree .
+//= require underscore
 // Vendor Files
-//= require Color/SpaceW3
-//= require MIDI/AudioDetect
-//= require MIDI/LoadPlugin
-//= require Widgets/Loader
-//= require MIDI/Plugin
-//= require MIDI/Player
-//= require MusicTheory/Synesthesia
-//= require Window/DOMLoader.XMLHttp
-//= require Window/Event
-//= require inc/jasmid/stream
-//= require inc/jasmid/midifile
-//= require inc/jasmid/replayer
-//= require soundfont/acoustic_grand_piano-mp3.js
-//= require inc/Base64
-//= require inc/base64binary
-//= require inc/WebMIDIAPI
+//= require JZZ/JZZ.Midi
+//= require JZZ/JZZ.MidiFile
+
