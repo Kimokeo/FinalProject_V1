@@ -19,7 +19,7 @@
  var playing;
  var sound;
  var out;
-
+// MIDI TRigger
  function visit(t){
   if(t.nodeType!=1) return;
   if(t.getAttribute('midi')){
@@ -98,7 +98,7 @@
   playing.className='';
   playing=null;
  }
-
+// inject sound fonts
  function prog(e){
   var e=window.event || e;
   var t;
@@ -116,7 +116,7 @@
   sound=t;
  }
 })();
-
+// Midi ID
 var Jazz = document.getElementById("Jazz1"); if(!Jazz || !Jazz.isJazz) Jazz = document.getElementById("Jazz2");
 var midi={65:58,90:59,88:60,68:61,67:62,70:63,86:64,66:65,72:66,78:67,74:68,77:69,75:70,188:71,190:72,186:73,59:73,191:74,222:75};
 document.onkeydown=function(e){
@@ -147,12 +147,21 @@ document.onkeyup=function(e){
 window.onload=function(){
  if(Jazz.isJazz) Jazz.MidiOut(0x80,0,0);
 }
+// Octave change function
 var octUp = function() {
+  _.each($('div.piano span'), function(piano_key) {
+    console.log($(piano_key).attr("id"));
+    $(piano_key).attr("id", parseInt($(piano_key).attr('id')) + 12)
+  });
   midi = _.mapObject(midi, function (val, key) {
     return val + 12;
   });
 };
 var octDown = function() {
+  _.each($('div.piano span'), function(piano_key) {
+    console.log($(piano_key).attr("id"));
+    $(piano_key).attr("id", parseInt($(piano_key).attr('id')) - 12)
+  });
   midi = _.mapObject(midi, function (val, key) {
     return val - 12;
   });
@@ -324,7 +333,7 @@ div.ebony {
 <div class="piano">
 
   <br>
-<span id=58>A</span><span class=blank>S</span><span id=61>D</span><span id=63>F</span><span class=blank>G</span><span id=66>H</span><span id=68>J</span><span id=70>K</span><span class=blank>L</span><span id=73>:<br>;</span><span id=75>"<br></span>
+<span id=58>A</span><span class=blank>S</span><span id=61>D</span><span id=63>F</span><span class=blank>G</span><span id=66>H</span><span id=68>J</span><span id=70>K</span><span class=blank>L</span><span id=73>:<br>;</span><span id=75>'"'<br></span>
 </div>
 <div class="piano" style="margin-left: 2.3em;">
 <span id=59>Z</span><span id=60>X</span><span id=62>C</span><span id=64>V</span><span id=65>B</span><span id=67>N</span><span id=69>M</span><span id=71><<br>,</span><span id=72>><br>.</span><span id=74>?<br>/</span>
