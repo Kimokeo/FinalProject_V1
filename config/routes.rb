@@ -5,12 +5,14 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'home#index'
-  get 'home/basic' => 'home#basic'
-  get 'home/demo' => 'home#demo'
+  get 'home/about' => 'home#about'
   resources :users do
     get 'simple_interface' => 'users#simple_interface'
     get 'console' => 'users#console'
     get 'song_builder' => 'users#song_builder'
+    get 'midi_console' => 'users#midi_console'
+    get 'percussion_interface' => 'users#percussion_interface'
+    get 'add_track' => 'users#add_track'
   end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -11,11 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318021319) do
+ActiveRecord::Schema.define(version: 20150324025743) do
 
   create_table "homes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "tracks", force: :cascade do |t|
+    t.string   "name",                    limit: 255
+    t.string   "creator",                 limit: 255
+    t.integer  "user_id",                 limit: 4
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "user_track_file_name",    limit: 255
+    t.string   "user_track_content_type", limit: 255
+    t.integer  "user_track_file_size",    limit: 4
+    t.datetime "user_track_updated_at"
   end
 
   create_table "users", force: :cascade do |t|

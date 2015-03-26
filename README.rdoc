@@ -1,28 +1,22 @@
 == README
+Crescendo!
+The idea behind Crescendo was to create an open-source environment where
+musicians could create, listen to, and share their creations.
+(like a github for musicians)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The app is built on rails and utilizes Jazz Midi as an API/plugin to create
+sound within the browser. Currently high quality audio is quite difficult to render in browser apps due to the large amount of processing power and memory
+draws from Computers. So minimalism is key in functionality.
 
-Things you may want to cover:
+Works with most MIDI controllers and utilizes over 120 soundfonts. You can also
+use your computer keyboard as well.
 
-* Ruby version
+only requirements is Rails and the JazzMIDI plugin which can be aquired from
+www.Jazz-Soft.net (great community there)
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
+To do list
+- fix stylesheets on sound pages
+- recording and octave functions for non MIDI board
+- Heroku deployment
+- track algos
 <tt>rake doc:app</tt>.

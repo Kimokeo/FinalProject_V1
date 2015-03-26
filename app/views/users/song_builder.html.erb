@@ -8,7 +8,6 @@
 <meta http-equiv="X-UA-Compatible" content="requiresActiveX=true">
 <script src="../script/JZZ.Midi.js"></script>
 <script src="../script/JZZ.MidiFile.js"></script>
-<!--JAZZLOGO_JS--><script src="../JazzLogo.js"></script>
 <!--STYLE_CSS--><link rel="stylesheet" type="text/css" href="../style.css">
 <style type="text/css">
 button {
@@ -62,12 +61,9 @@ button {
 <p style="visibility:visible;">This page requires <a href="http://jazz-soft.net">Jazz-Plugin</a> ...</p>
   </object>
 </object>
-
-<p><em>NOTE:</em> another <a href="PlayMidiFile.html">example</a> explains how to <span id="play"><button id="playbtn" onclick="onButton();" disabled="">play</button></span> it.</p>
-
 <h2>from file:</h2>
 <p><input type="file" id="file" size="80" onchange="fromFile();"></p>
-
+<p><span id="play"><button id="playbtn" onclick="onButton();" disabled="">play</button></span> it.</p>
 
 
 <p>
@@ -122,10 +118,10 @@ function fromUrl(){
  }
  catch(e){ err(e);}
 }
-function fromString(){
- plzWait(); fName('Base64 string');
- readMidiFile(JZZ.MidiFile.fromBase64(b64));
-}
+// function fromString(){
+ // plzWait(); fName('Base64 string');
+ // readMidiFile(JZZ.MidiFile.fromBase64(b64));
+// }
 function readMidiFile(s){
  try{
   var mf=new JZZ.MidiFile(s);
@@ -140,41 +136,6 @@ function readMidiFile(s){
 }
 function displayMidiFile(mf){
  document.getElementById('midi').innerHTML='';
- var chunk;
- var div;
- chunk=document.createElement('div');
- chunk.innerHTML='<div class=hdr>MThd</div>';
- div=document.createElement('div');
- div.innerHTML='type: '+mf.type+(mf.ppqn?(', ppqn: '+mf.ppqn):(' smpte: '+mf.fps+'x'+mf.ppf));
- chunk.appendChild(div);
- document.getElementById('midi').appendChild(chunk);
- for(var i=0;i<mf.length;i++){
-  chunk=document.createElement('div');
-  chunk.innerHTML='<div class=hdr>'+mf[i].type+'</div>';
-  if(mf[i].data){
-   div=document.createElement('div');
-   arr=[]; s=mf[i].data;
-   for(var j=0;j<s.length;j++){
-    var c=s.charCodeAt(j)<32?'-':s.charAt(j);
-    if(c=='&') c='&amp;'; if(c=='<') c='&lt;'; if(c=='>') c='&gt;';
-    var n=(s.charCodeAt(j)<16?'0':'')+s.charCodeAt(j).toString(16);
-    if(j && !(j%32)) arr.push('<br>'); else if(j && !(j%8)) arr.push('&nbsp;');
-    arr.push('<span title="'+c+'">'+n+'</span>');
-   }
-   div.innerHTML=arr.join(' ');
-   chunk.appendChild(div);
-  }
-  if(mf[i] instanceof JZZ.MidiFile.MTrk){
-   for(var j=0;j<mf[i].length;j++){
-    var evt=mf[i][j];
-    var s=evt.toString().replace(/&/g,'&amp;').replace(/>/g,'&gt;').replace(/</g,'&lt;');
-    div=document.createElement('div');
-    div.innerHTML="<span class=clk>"+evt.time+"</span> <span>"+s+"</span>";
-    chunk.appendChild(div);
-   }
-  }
-  document.getElementById('midi').appendChild(chunk);
- }
 }
 function err(e){ document.getElementById('midi').innerHTML='<span class=err>'+e+'</span>';}
 function plzWait(){

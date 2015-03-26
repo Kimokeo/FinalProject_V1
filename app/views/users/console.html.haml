@@ -1,9 +1,16 @@
 = stylesheet_link_tag  "application", :media => "all" , 'data-turbolinks-track' => true
 %body
-	.col-md-3
-		%h2 Select your Console
+	.col-md-4
+		%h2 Select your Console and Record
 		=link_to "Simple console", user_simple_interface_path
-	.col-md-3
+		%br
+		=link_to "MIDI console", user_midi_console_path
+	.col-md-4
 		%h2 Build a song
 		%h3 Combine and listen to your tracks
 		=link_to "Combine tracks", user_song_builder_path
+		%br
+		=link_to "Upload a Track", user_add_track_path
+	.col-md-4
+		%h2 Find tracks
+		=link_to "Trending Tracks", users_path

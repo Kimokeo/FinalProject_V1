@@ -28,6 +28,11 @@ class UsersController < ApplicationController
 		@user = User.find params[:id]
 	end
 	
+	def add_track
+		@user = User.find params[:user_id]
+		# User_track.create
+	end
+		
 	# def set_user_id
 	# 	@user = User.find params[:id]
 	# end
@@ -36,5 +41,4 @@ private
 	def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :miditrack)
   end
-
 end

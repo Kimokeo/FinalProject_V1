@@ -1,177 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style type="text/css" src="/stylesheet/bootstrap-theme">
-</style>
-<title>Crescendo</title>
-
-<meta name="description" content="MIDI Console">
-<meta http-equiv="X-UA-Compatible" content="requiresActiveX=true">
-
-<!--STYLE_CSS--><link rel="stylesheet" type="text/css" href="/app/assets/stylesheets/bootstrap">
-</head>
-<body>
-<script type="text/javascript">
-(function(){
- if(window.addEventListener) window.addEventListener('load',init,false);
- else if(window.attachEvent) window.attachEvent('onload',init);
- var midi_init;
- var playing;
- var sound;
- var out;
-
- function visit(t){
-  if(t.nodeType!=1) return;
-  if(t.getAttribute('midi')){
-   if(t.addEventListener){
-    t.addEventListener('mousedown',down,false);
-   }
-   else if(t.attachEvent){
-    t.attachEvent('onmousedown',down);
-   }
-  }
-  if(t.getAttribute('prog')){
-   if(t.addEventListener){
-    t.addEventListener('mousedown',prog,false);
-   }
-   else if(t.attachEvent){
-    t.attachEvent('onmousedown',prog);
-   }
-  }
-  for(var i in t.childNodes){
-   visit(t.childNodes[i]);
-  }
- }
-
- function init(){
-  if(document.addEventListener){
-   document.addEventListener('mouseup',up,false);
-  }
-  else if(document.attachEvent){
-   document.attachEvent('onmouseup',up);
-  }
-  Jazz = document.getElementById('Jazz1'); if(!Jazz || !Jazz.isJazz) Jazz = document.getElementById('Jazz2');
-  if(Jazz && Jazz.isJazz){
-   Jazz.MidiOut(0x80,0,0);
-   try{
-    out=document.getElementById('midiout');
-    var list=Jazz.MidiOutList();
-    for(var i in list){
-     out[i]=new Option(list[i],list[i],i==0,i==0);
-    }
-    if(out.addEventListener){
-     out.addEventListener('change',changemidi,false);
-    }
-    else if(out.attachEvent){
-     out.attachEvent('onchange',changemidi);
-    }
-    document.getElementById('selectmidiout').className='';
-   }
-   catch(err){}
-  }
-  visit(document.body);
- }
-
- function changemidi(){
-  Jazz.MidiOutOpen(out.options[out.selectedIndex].value);
- }
-
- function down(e){
-  var e=window.event || e;
-  var t;
-  if (e.target) t = e.target;
-  else if (e.srcElement) t = e.srcElement;
-  up(0);
-  while(!t.getAttribute('midi')) t=t.parentNode;
-  if(Jazz && Jazz.isJazz){
-   Jazz.MidiOut(0x90,t.getAttribute('midi'),100);
-  }
-  t.className='playing';
-  playing=t;
- }
-
- function up(e){
-  if(!playing) return;
-  if(Jazz && Jazz.isJazz){
-   Jazz.MidiOut(0x80,playing.getAttribute('midi'),0);
-  }
-  playing.className='';
-  playing=null;
- }
-
- function prog(e){
-  var e=window.event || e;
-  var t;
-  if (e.target) t = e.target;
-  else if (e.srcElement) t = e.srcElement;
-  up(0);
-  if(sound){ sound.className='';}
-  while(!t.getAttribute('prog')) t=t.parentNode;
-  if(Jazz && Jazz.isJazz){
-   Jazz.MidiOut(0xC0,t.getAttribute('prog'),0);
-   Jazz.MidiOut(0x90,60,0x7f);
-   window.setTimeout(function(){ Jazz.MidiOut(0x80,60,0);},500);
-  }
-  t.className='on';
-  sound=t;
- }
-})();
-
-var Jazz = document.getElementById("Jazz1"); if(!Jazz || !Jazz.isJazz) Jazz = document.getElementById("Jazz2");
-var midi={65:58,90:59,88:60,68:61,67:62,70:63,86:64,66:65,72:66,78:67,74:68,77:69,75:70,188:71,190:72,186:73,59:73,191:74,222:75};
-document.onkeydown=function(e){
- var e=window.event || e;
- var m=midi[e.keyCode];
- console.log(e.keyCode);
- if(m){
-  var k=document.getElementById(m);
-  if(k && k.className!="on"){
-   if(Jazz.isJazz) Jazz.MidiOut(0x90,m,0x7f);
-   k.className="on";
-  }
-  return false;
- }
-}
-document.onkeyup=function(e){
- var e=window.event || e;
- var m=midi[e.keyCode];
- if(m){
-  var k=document.getElementById(m);
-  if(k && k.className!=""){
-   if(Jazz.isJazz) Jazz.MidiOut(0x80,m,0);
-   k.className="";
-  }
-  return false;
- }
-}
-window.onload=function(){
- if(Jazz.isJazz) Jazz.MidiOut(0x80,0,0);
-}
-var octUp = function() {
-  midi = _.mapObject(midi, function (val, key) {
-    return val + 12;
-  });
-};
-var octDown = function() {
-  midi = _.mapObject(midi, function (val, key) {
-    return val - 12;
-  });
-};
-</script>
+<title>Record MIDI File</title>
+<script src="JZZ.Midi.js"></script>
+<script src="JZZ.MidiFile.js"></script>
 
 <style type="text/css">
-header {
-background-color: #8D9CBF;
+.hidden {
+ visibility: hidden;
+ width: 0px;
+ height: 0px;
+ margin: 0px;
+ padding: 0px;
+ border-style: none;
+ border-width: 0px;
+ max-width: 0px;
+ max-height: 0px;
 }
-body {
-  margin-left: 200px
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.42857143;
-  color: #333;
-  background-color: #3C548A;
+button {
+ width:6em;
 }
-  div.piano {
+#rec {
+ color:#f00;
+}
+.embed {
+ width:12em;
+ height:1em;
+ margin-left:2em;
+}
+
+div.piano {
  font-size: 1.2em;
  overflow: hidden;
  display: block;
@@ -273,7 +131,6 @@ div.ebony {
  vertical-align:top;
  width:17em;
  margin:.2em;
- background-color: #528DBF;
 }
 .hdr {
  text-align:center;
@@ -298,37 +155,285 @@ div.ebony {
  max-width: 0px;
  max-height: 0px;
 }
-
 </style>
-
-
-<h1>MIDI Console</h1>
+</head>
+<script src="JZZ.Midi.js"></script>
+<script src="JZZ.MidiFile.js"></script>
+<body>
+<h1>Record MIDI File</h1>
 
 <object id="Jazz1" classid="CLSID:1ACE1618-1C7D-4561-AEE1-34842AA85E90" class="hidden">
-  <object id="Jazz2" type="audio/x-jazz" class="hidden">
-<p style="visibility:visible;">This page requires <a href="http://jazz-soft.net">Jazz-Plugin</a> ...</p>
+<object id="Jazz2" type="audio/x-jazz" class="hidden">
+<p style="visibility:visible;">This page requires <a href=http://jazz-soft.net>Jazz-Plugin</a> ...</p>
   </object>
 </object>
-  <button onclick="octUp()">Octave up</button>
-  <button onclick="octDown()">Octave down</button>
-<div id="selectmidiout" class=""><p>MIDI Out: <select id="midiout"><option value="Apple DLS Synth" selected="">Apple DLS Synth</option></select></p></div>
 
-<div id="piano">
-<div class="ebony">
-<span midi="22"></span><span class="break"></span><span midi="25"></span><span midi="27"></span><span class="break"></span><span midi="30"></span><span midi="32"></span><span midi="34"></span><span class="break"></span><span midi="37"></span><span midi="39" class=""></span><span class="break"></span><span midi="42" class=""></span><span midi="44"></span><span midi="46"></span><span class="break"></span><span midi="49"></span><span midi="51"></span><span class="break"></span><span midi="54"></span><span midi="56" class=""></span><span midi="58" class=""></span><span class="break"></span><span midi="61"></span><span midi="63" class=""></span><span class="break"></span><span midi="66"></span><span midi="68"></span><span midi="70"></span><span class="break"></span><span midi="73"></span><span midi="75"></span><span class="break"></span><span midi="78"></span><span midi="80"></span><span midi="82"></span><span class="break"></span><span midi="85"></span><span midi="87"></span><span class="break"></span><span midi="90"></span><span midi="92"></span><span midi="94"></span><span class="break"></span><span midi="97"></span><span midi="99"></span><span class="break"></span><span midi="102"></span><span midi="104"></span><span midi="106"></span>
-</div>
-<div class="ivory">
-<span midi="21"></span><span midi="23"></span><span midi="24"></span><span midi="26"></span><span midi="28"></span><span midi="29"></span><span midi="31"></span><span midi="33"></span><span midi="35" class=""></span><span midi="36" class=""></span><span midi="38" class=""></span><span midi="40" class=""></span><span midi="41"></span><span midi="43" class=""></span><span midi="45"></span><span midi="47" class=""></span><span midi="48"></span><span midi="50" class=""></span><span midi="52" class=""></span><span midi="53" class=""></span><span midi="55" class=""></span><span midi="57" class=""></span><span midi="59" class=""></span><span midi="60" class=""></span><span midi="62" class=""></span><span midi="64" class=""></span><span midi="65" class=""></span><span midi="67" class=""></span><span midi="69" class=""></span><span midi="71"></span><span midi="72" class=""></span><span midi="74" class=""></span><span midi="76"></span><span midi="77" class=""></span><span midi="79" class=""></span><span midi="81" class=""></span><span midi="83" class=""></span><span midi="84" class=""></span><span midi="86"></span><span midi="88"></span><span midi="89"></span><span midi="91"></span><span midi="93"></span><span midi="95"></span><span midi="96"></span><span midi="98"></span><span midi="100"></span><span midi="101"></span><span midi="103"></span><span midi="105"></span><span midi="107"></span><span midi="108"></span>
-</div>
-</div>
-<div class="piano">
+<p>
+MIDI In: <select id=selectin onchange='changein();'></select>
+MIDI Out: <select id=selectout onchange='changeout();'></select>
+</p><p>
+<button id=rec onmousedown='rec();' disabled>Record</button>
+<button id=play onmousedown='play();' disabled>Play</button>
+<button id=stop onmousedown='stop();' disabled>Stop</button>
+<span id='dwnld'></span>
+</p>
 
-  <br>
-<span id=58>A</span><span class=blank>S</span><span id=61>D</span><span id=63>F</span><span class=blank>G</span><span id=66>H</span><span id=68>J</span><span id=70>K</span><span class=blank>L</span><span id=73>:<br>;</span><span id=75>"<br></span>
-</div>
-<div class="piano" style="margin-left: 2.3em;">
-<span id=59>Z</span><span id=60>X</span><span id=62>C</span><span id=64>V</span><span id=65>B</span><span id=67>N</span><span id=69>M</span><span id=71><<br>,</span><span id=72>><br>.</span><span id=74>?<br>/</span>
-</div>
+<script><!--
+(function(){
+ if(window.addEventListener) window.addEventListener('load',init,false);
+ else if(window.attachEvent) window.attachEvent('onload',init);
+ var midi_init;
+ var playing;
+ var sound;
+ var out;
+
+ function visit(t){
+  if(t.nodeType!=1) return;
+  if(t.getAttribute('midiIn')){
+   if(t.addEventListener){
+    t.addEventListener('mousedown',down,false);
+   }
+   else if(t.attachEvent){
+    t.attachEvent('onmousedown',down);
+   }
+  }
+  if(t.getAttribute('prog')){
+   if(t.addEventListener){
+    t.addEventListener('mousedown',prog,false);
+   }
+   else if(t.attachEvent){
+    t.attachEvent('onmousedown',prog);
+   }
+  }
+  for(var i in t.childNodes){
+   visit(t.childNodes[i]);
+  }
+ }
+
+ function init(){
+  if(document.addEventListener){
+   document.addEventListener('mouseup',up,false);
+  }
+  else if(document.attachEvent){
+   document.attachEvent('onmouseup',up);
+  }
+  Jazz = document.getElementById('Jazz1'); if(!Jazz || !Jazz.isJazz) Jazz = document.getElementById('Jazz2');
+  if(Jazz && Jazz.isJazz){
+   Jazz.MidiOut(0x80,0,0);
+   try{
+    out=document.getElementById('midiout');
+    var list=Jazz.MidiOutList();
+    for(var i in list){
+     out[i]=new Option(list[i],list[i],i==0,i==0);
+    }
+    if(out.addEventListener){
+     out.addEventListener('change',changemidi,false);
+    }
+    else if(out.attachEvent){
+     out.attachEvent('onchange',changemidi);
+    }
+    document.getElementById('selectmidiout').className='';
+   }
+   catch(err){}
+  }
+  visit(document.body);
+ }
+
+ function changemidi(){
+  Jazz.MidiOutOpen(out.options[out.selectedIndex].value);
+ }
+
+ function down(e){
+  var e=window.event || e;
+  var t;
+  if (e.target) t = e.target;
+  else if (e.srcElement) t = e.srcElement;
+  up(0);
+  while(!t.getAttribute('midiIn')) t=t.parentNode;
+  if(Jazz && Jazz.isJazz){
+   Jazz.MidiOut(0x90,t.getAttribute('midiIn'),100);
+  }
+  t.className='playing';
+  playing=t;
+ }
+
+ function up(e){
+  if(!playing) return;
+  if(Jazz && Jazz.isJazz){
+   Jazz.MidiOut(0x80,playing.getAttribute('midiIn'),0);
+  }
+  playing.className='';
+  playing=null;
+ }
+
+ function prog(e){
+  var e=window.event || e;
+  var t;
+  if (e.target) t = e.target;
+  else if (e.srcElement) t = e.srcElement;
+  up(0);
+  if(sound){ sound.className='';}
+  while(!t.getAttribute('prog')) t=t.parentNode;
+  if(Jazz && Jazz.isJazz){
+   Jazz.MidiOut(0xC0,t.getAttribute('prog'),0);
+   Jazz.MidiOut(0x90,60,0x7f);
+   window.setTimeout(function(){ Jazz.MidiOut(0x80,60,0);},500);
+  }
+  t.className='on';
+  sound=t;
+ }
+})();
+
+var Jazz = document.getElementById("Jazz1"); if(!Jazz || !Jazz.isJazz) Jazz = document.getElementById("Jazz2");
+
+document.onkeydown=function(e){
+ var e=window.event || e;
+ var m=midiIn[e.keyCode];
+ console.log(e.keyCode);
+ if(m){
+  var k=document.getElementById(m);
+  if(k && k.className!="on"){
+   if(Jazz.isJazz) Jazz.MidiOut(0x90,m,0x7f);
+   k.className="on";
+  }
+  return false;
+ }
+}
+document.onkeyup=function(e){
+ var e=window.event || e;
+ var m=midiIn[e.keyCode];
+ if(m){
+  var k=document.getElementById(m);
+  if(k && k.className!=""){
+   if(Jazz.isJazz) Jazz.MidiOut(0x80,m,0);
+   k.className="";
+  }
+  return false;
+ }
+}
+window.onload=function(){
+ if(Jazz.isJazz) Jazz.MidiOut(0x80,0,0);
+}
+
+var Jazz = document.getElementById("Jazz1"); if(!Jazz || !Jazz.isJazz) Jazz = document.getElementById("Jazz2");
+var player;
+var midiIn;
+var midiOut;
+var recording;
+var playing;
+var selIn = document.getElementById('selectin');
+var selOut = document.getElementById('selectout');
+var btnRec = document.getElementById('rec');
+var btnPlay = document.getElementById('play');
+var btnStop = document.getElementById('stop');
+var dwnld = document.getElementById('dwnld');
+var start;
+
+function onPlayerEvent(e){
+ if(e.midi instanceof JZZ.Midi){
+  Jazz.MidiOutRaw(e.midi.array());
+ }
+ else if(e.control=='stop'){
+  for(var i=0;i<16;i++) Jazz.MidiOut(0xb0+i,123,0);
+  playing = false;
+  update();
+ }
+}
+function rec(){
+ player = undefined;
+ recording = true;
+ Jazz.ClearMidiIn();
+ start = Jazz.Time();
+ update();
+}
+function play(){
+ playing = true;
+ update();
+ player.play();
+ Jazz.MidiOutLong(a);
+}
+function myCallback(t,a){
+ if(!a.length || a[0]==0xf8 || a[0]==0xfe || a[0]==0xff) return;
+ // play
+ Jazz.MidiOutLong(a);
+ // record
+ t=(t-start)/5; // convert ms to ticks
+ var len=JZZ.Midi.len(a[0]);
+ if(len!=undefined) a=a.slice(0,len);
+ tr.addMidi(t,a);
+}
+
+Jazz.MidiInOpen(0,myCallback);
+function stop(){
+ if(playing) player.stop();
+ else if(recording){
+  // MIDI file type 0 - all channels in one track; 100 ppq; default tempo 120 bpm is 5 ms per tick;
+  var mf = new JZZ.MidiFile(0,100);
+  var tr = new JZZ.MidiFile.MTrk; mf.push(tr);
+  var a;
+  while(a=Jazz.QueryMidiIn()){
+   if(!a.length || a[1]==0xf8 || a[1]==0xfe || a[1]==0xff) continue;
+   var t=(a[0]-start)/5; // convert ms to ticks
+   a.shift();
+   var len=JZZ.Midi.len(a[0]);
+   if(len!=undefined) a=a.slice(0,len);
+   tr.addMidi(t,a);
+  }
+  tr.setTime((Jazz.Time()-start)/5);
+  player = mf.player();
+  player.onEvent = onPlayerEvent;
+  recording = false;
+  update();
+  var uri = 'data:audio/midi;base64,' + JZZ.MidiFile.toBase64(mf.dump());
+  dwnld.innerHTML='MIDI file: <a href=' + uri + '>DOWNLOAD</a> <embed src=' + uri + ' autostart=false>';
+ }
+}
+function changein(){
+ if(!Jazz || !Jazz.isJazz) return;
+ midiIn = Jazz.MidiInOpen(selIn.options[selIn.selectedIndex].value);
+ for(var i in selIn){
+  if(midiIn==selIn.options[i].value){ selIn[i].selected=1; break;}
+ }
+}
+function changeout(){
+ if(!Jazz || !Jazz.isJazz) return;
+ midiOut = Jazz.MidiOutOpen(selOut.options[selOut.selectedIndex].value);
+ for(var i in selOut){
+  if(midiOut==selOut.options[i].value){ selOut[i].selected=1; break;}
+ }
+}
+function update(){
+ btnRec.disabled = recording || playing || !midiIn;
+ btnPlay.disabled = playing || !player || !midiOut;
+ btnStop.disabled = !playing && !recording;
+ selOut.disabled = playing;
+ selIn.disabled = recording;
+}
+try{
+ var list=Jazz.MidiOutList();
+ for(var i in list){
+  selOut[i]=new Option(list[i],list[i],0,0);
+ }
+ for(var i in list){
+  midiOut=Jazz.MidiOutOpen(i);
+  if(midiOut){ selOut[i].selected=1; break;}
+ }
+ list=Jazz.MidiInList();
+ for(var i in list){
+  selIn[i]=new Option(list[i],list[i],0,0);
+ }
+ for(var i in list){
+  midiIn=Jazz.MidiInOpen(i);
+  if(midiIn){ selIn[i].selected=1; break;}
+ }
+ update();
+}
+catch(err){}
+--></script>
+
+</body>
+</html>
+
 
 <div class="tab">
 <span class="col">
